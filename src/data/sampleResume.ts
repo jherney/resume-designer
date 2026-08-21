@@ -1,6 +1,7 @@
 import type { ResumeData } from '../types/resume';
 
 export const sampleResume: ResumeData = {
+  resumeTitle: 'Alex Morgan — Software Developer',
   name: 'Alex Morgan',
   title: 'Full-Stack Developer',
   email: 'alex@example.com',

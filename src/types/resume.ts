@@ -23,6 +23,7 @@ export interface ProjectItem {
 }
 
 export interface ResumeData {
+  resumeTitle: string;
   name: string;
   title: string;
   email: string;
@@ -32,4 +33,9 @@ export interface ResumeData {
   experience: ExperienceItem[];
   education: EducationItem[];
   projects: ProjectItem[];
+}
+
+export interface StoredResumeState {
+  resume: ResumeData;
+  theme: ThemeName;
 }

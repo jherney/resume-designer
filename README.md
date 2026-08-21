@@ -15,6 +15,7 @@ npm run dev
 - [x] Live preview
 - [x] Initial themes
 - [x] Editable experience, education, projects, and skills
+- [x] Local browser persistence
 - [x] Browser print-to-PDF
 - [ ] Add persistence and authentication
 - [ ] Add hosted API and PostgreSQL
