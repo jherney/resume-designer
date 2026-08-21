@@ -14,8 +14,8 @@ npm run dev
 - [x] Structured resume data
 - [x] Live preview
 - [x] Initial themes
+- [x] Editable experience, education, projects, and skills
 - [x] Browser print-to-PDF
-- [ ] Add full experience, education, and projects editors
 - [ ] Add persistence and authentication
 - [ ] Add hosted API and PostgreSQL
 - [ ] Add server-side PDF generation

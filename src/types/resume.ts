@@ -8,6 +8,20 @@ export interface ExperienceItem {
   bullets: string[];
 }
 
+export interface EducationItem {
+  id: string;
+  institution: string;
+  degree: string;
+  dates: string;
+}
+
+export interface ProjectItem {
+  id: string;
+  name: string;
+  description: string;
+  link?: string;
+}
+
 export interface ResumeData {
   name: string;
   title: string;
@@ -16,4 +30,6 @@ export interface ResumeData {
   summary: string;
   skills: string[];
   experience: ExperienceItem[];
+  education: EducationItem[];
+  projects: ProjectItem[];
 }

@@ -14,4 +14,16 @@ export const sampleResume: ResumeData = {
     dates: '2023 — Present',
     bullets: ['Built full-stack applications with React and .NET.', 'Automated deployment workflows and improved release reliability.'],
   }],
+  education: [{
+    id: '1',
+    institution: 'Nova Scotia Community College',
+    degree: 'Diploma in Information Technology',
+    dates: '2019 — 2021',
+  }],
+  projects: [{
+    id: '1',
+    name: 'Resume Designer',
+    description: 'A cross-platform resume builder with live themes and PDF export.',
+    link: 'github.com/jherney/resume-designer',
+  }],
 };
