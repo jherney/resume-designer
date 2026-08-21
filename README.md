@@ -16,8 +16,10 @@ npm run dev
 - [x] Initial themes
 - [x] Editable experience, education, projects, and skills
 - [x] Local browser persistence
+- [x] Reusable editor components and collapsible sections
+- [x] Client-side validation
 - [x] Browser print-to-PDF
-- [ ] Add persistence and authentication
+- [ ] Add authentication and cloud persistence
 - [ ] Add hosted API and PostgreSQL
 - [ ] Add server-side PDF generation
 - [ ] Add Tauri desktop packaging

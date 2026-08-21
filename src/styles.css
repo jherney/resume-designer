@@ -3,6 +3,7 @@
 body { margin: 0; }
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .55; }
 .app-shell { max-width: 1440px; margin: 0 auto; padding: 32px; }
 .topbar { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
 .eyebrow { color: #635bff; font-size: .75rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
@@ -25,6 +26,8 @@ details.editor-section summary span { flex: 1; }
 .section-content { padding-top: 8px; }
 label { display: grid; gap: 7px; margin: 18px 0; color: #596575; font-size: .84rem; font-weight: 700; }
 .hint { color: #8a94a3; font-size: .75rem; font-weight: 400; }
+.field-error { color: #b42318; font-size: .78rem; font-weight: 500; }
+input[aria-invalid="true"] { border-color: #d92d20; background: #fff8f7; }
 input, textarea, select { width: 100%; border: 1px solid #d4dbe5; border-radius: 9px; padding: 11px 12px; color: #18202a; background: #fbfcfe; }
 textarea { resize: vertical; }
 .add-button, .remove-button { border: 1px solid #d4dbe5; border-radius: 7px; padding: 6px 9px; background: white; color: #4c43d9; font-size: .78rem; font-weight: 700; }
