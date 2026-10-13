@@ -232,9 +232,9 @@ export const useStore = create<AppState>((set, get) => {
     },
 
     async exportPDF() {
-      const { currentId, theme, resume } = get();
-      if (!currentId) return;
-      const blob = await api.pdf.generate(currentId, theme);
+      const { theme, resume } = get();
+      if (!resume) return;
+      const blob = await api.pdf.generate(resume, theme);
       const filename = `${resume?.resumeTitle || 'resume'}.pdf`;
       if ('__TAURI_INTERNALS__' in window) {
         // Webview ignores anchor downloads; ask where to save and write the file natively.

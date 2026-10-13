@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { CollapsibleSection } from './components/CollapsibleSection';
 import { CollectionEditor } from './components/CollectionEditor';
 import { PersonalInfoEditor } from './components/PersonalInfoEditor';
-import { ResumePreview } from './components/ResumePreview';
+import { ResumePreview } from '../shared/resume/ResumePreview';
 import { AuthScreen } from './components/AuthScreen';
 import { ResumeSidebar } from './components/ResumeSidebar';
 import { useStore } from './store';

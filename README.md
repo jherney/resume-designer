@@ -36,3 +36,10 @@ VITE_API_URL=https://your-api/api npm run tauri build   # installers in src-taur
 
 Add `tauri://localhost,http://tauri.localhost` to the backend's comma-separated `FRONTEND_URL`
 so the desktop webview passes CORS. PDF export opens a native save dialog.
+
+## PDF export
+
+The backend renders the same `shared/resume` preview component and stylesheet the editor shows, then prints it
+with headless Chrome via Puppeteer, so exports match the live preview. Install Puppeteer's browser with
+`cd backend && npx puppeteer browsers install chrome`, or set `PUPPETEER_EXECUTABLE_PATH` in `backend/.env`
+to an installed Chrome.
