@@ -1,61 +1,96 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { CollapsibleSection } from './components/CollapsibleSection';
 import { CollectionEditor } from './components/CollectionEditor';
 import { PersonalInfoEditor } from './components/PersonalInfoEditor';
 import { ResumePreview } from './components/ResumePreview';
-import { sampleResume } from './data/sampleResume';
-import type { ResumeData, StoredResumeState, ThemeName } from './types/resume';
-import { normalizeState, validateResume } from './utils/validation';
+import { AuthScreen } from './components/AuthScreen';
+import { ResumeSidebar } from './components/ResumeSidebar';
+import { useStore } from './store';
+import { validateResume } from './utils/validation';
+import type { ResumeData } from './types/resume';
 
-const STORAGE_KEY = 'resume-designer-state';
-
-function loadState(): StoredResumeState {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? normalizeState(JSON.parse(saved), { resume: sampleResume, theme: 'modern' }) : { resume: sampleResume, theme: 'modern' };
-  } catch { return { resume: sampleResume, theme: 'modern' }; }
+function hasErrorsFor(resume: ResumeData | null): boolean {
+  return resume ? Object.keys(validateResume(resume)).length > 0 : false;
 }
 
-function App() {
-  const [initialState] = useState(loadState);
-  const [resume, setResume] = useState<ResumeData>(initialState.resume);
-  const [theme, setTheme] = useState<ThemeName>(initialState.theme);
-  const [saveState, setSaveState] = useState<'saved' | 'saving'>('saved');
-  const errors = useMemo(() => validateResume(resume), [resume]);
-  const hasErrors = Object.keys(errors).length > 0;
+function Editor() {
+  const resume = useStore((s) => s.resume);
+  const theme = useStore((s) => s.theme);
+  const updateField = useStore((s) => s.updateField);
+  const setTheme = useStore((s) => s.setTheme);
 
-  useEffect(() => {
-    setSaveState('saving');
-    const timer = window.setTimeout(() => {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ resume, theme })); } catch { /* Storage may be unavailable. */ }
-      setSaveState('saved');
-    }, 300);
-    return () => window.clearTimeout(timer);
-  }, [resume, theme]);
+  const errors = useMemo(() => (resume ? validateResume(resume) : {}), [resume]);
 
-  const update = <K extends keyof ResumeData>(field: K, value: ResumeData[K]) => setResume((current) => ({ ...current, [field]: value }));
-  const resetResume = () => {
-    if (window.confirm('Reset this resume to the sample data? Your current local changes will be replaced.')) {
-      setResume(structuredClone(sampleResume));
-      setTheme('modern');
-    }
-  };
+  if (!resume) {
+    return (
+      <section className="workspace">
+        <aside className="panel editor-panel"><p className="empty-state">Select or create a resume to start editing.</p></aside>
+      </section>
+    );
+  }
 
-  return <main className="app-shell">
-    <header className="topbar">
-      <div><span className="eyebrow">Resume Designer</span><h1>Build a resume that feels like you.</h1><p className="save-status">{saveState === 'saving' ? 'Saving locally…' : 'Saved locally'}{hasErrors && ' · Fix required fields before exporting'}</p></div>
-      <div className="topbar-actions"><button type="button" className="secondary-button" onClick={resetResume}>Reset sample</button><button type="button" className="primary-button" disabled={hasErrors} onClick={() => window.print()}>Export PDF</button></div>
-    </header>
+  return (
     <section className="workspace">
       <aside className="panel editor-panel">
-        <CollapsibleSection title="Personal information"><PersonalInfoEditor resume={resume} theme={theme} errors={errors} onUpdate={update} onThemeChange={setTheme} /></CollapsibleSection>
-        <CollectionEditor collection="experience" items={resume.experience} onUpdate={(items) => update('experience', items as ResumeData['experience'])} />
-        <CollectionEditor collection="education" items={resume.education} onUpdate={(items) => update('education', items as ResumeData['education'])} />
-        <CollectionEditor collection="projects" items={resume.projects} onUpdate={(items) => update('projects', items as ResumeData['projects'])} />
+        <CollapsibleSection title="Personal information">
+          <PersonalInfoEditor resume={resume} theme={theme} errors={errors} onUpdate={updateField} onThemeChange={setTheme} />
+        </CollapsibleSection>
+        <CollectionEditor collection="experience" items={resume.experience} onUpdate={(items) => updateField('experience', items as ResumeData['experience'])} />
+        <CollectionEditor collection="education" items={resume.education} onUpdate={(items) => updateField('education', items as ResumeData['education'])} />
+        <CollectionEditor collection="projects" items={resume.projects} onUpdate={(items) => updateField('projects', items as ResumeData['projects'])} />
       </aside>
       <ResumePreview resume={resume} theme={theme} />
     </section>
-  </main>;
+  );
 }
 
-export default App;
+export default function App() {
+  const init = useStore((s) => s.init);
+  const user = useStore((s) => s.user);
+  const logout = useStore((s) => s.logout);
+  const exportPDF = useStore((s) => s.exportPDF);
+  const saveState = useStore((s) => s.saveState);
+  const resume = useStore((s) => s.resume);
+  const resetCurrent = useStore((s) => s.resetCurrent);
+
+  useEffect(() => {
+    void init();
+  }, [init]);
+
+  if (!user) return <AuthScreen />;
+
+  const hasErrors = hasErrorsFor(resume);
+  const statusText =
+    saveState === 'saving' ? 'Saving…' : saveState === 'error' ? 'Save failed' : 'All changes saved';
+
+  const resetResume = () => {
+    if (window.confirm('Reset this resume to the sample data? Your saved changes will be replaced.')) {
+      resetCurrent();
+    }
+  };
+
+  return (
+    <main className="app-shell">
+      <header className="topbar">
+        <div>
+          <span className="eyebrow">Resume Designer</span>
+          <h1>Build a resume that feels like you.</h1>
+          <p className="save-status">
+            {statusText}
+            {hasErrors && ' · Fix required fields before exporting'}
+          </p>
+        </div>
+        <div className="topbar-actions">
+          <span className="user-email">{user.email}</span>
+          <button type="button" className="secondary-button" onClick={resetResume}>Reset sample</button>
+          <button type="button" className="secondary-button" onClick={() => void logout()}>Sign out</button>
+          <button type="button" className="primary-button" disabled={hasErrors} onClick={() => void exportPDF()}>Export PDF</button>
+        </div>
+      </header>
+      <div className="layout">
+        <ResumeSidebar />
+        <Editor />
+      </div>
+    </main>
+  );
+}
