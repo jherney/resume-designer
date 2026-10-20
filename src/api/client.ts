@@ -1,3 +1,5 @@
+import type { ResumeData, ThemeName } from '../types/resume';
+
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -63,14 +65,14 @@ export const api = {
       request<{ resume: any }>(`/resumes/${id}/duplicate`, { method: 'POST' }),
   },
   pdf: {
-    generate: (resumeId: string, theme?: string) =>
+    generate: (data: ResumeData, theme: ThemeName) =>
       fetch(`${API_BASE}/pdf/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...(localStorage.getItem('auth_token') ? { 'Authorization': `Bearer ${localStorage.getItem('auth_token')}` } : {}),
         },
-        body: JSON.stringify({ resumeId, theme }),
+        body: JSON.stringify({ data, theme }),
       }).then((res) => {
         if (!res.ok) throw new Error('Failed to generate PDF');
         return res.blob();
