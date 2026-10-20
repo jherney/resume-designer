@@ -5,6 +5,7 @@ import { PersonalInfoEditor } from './components/PersonalInfoEditor';
 import { ResumePreview } from '../shared/resume/ResumePreview';
 import { AuthScreen } from './components/AuthScreen';
 import { ResumeSidebar } from './components/ResumeSidebar';
+import { SkillsEditor } from './components/SkillsEditor';
 import { useStore } from './store';
 import { validateResume } from './utils/validation';
 import type { ResumeData } from './types/resume';
@@ -38,6 +39,9 @@ function Editor() {
         <CollectionEditor collection="experience" items={resume.experience} onUpdate={(items) => updateField('experience', items as ResumeData['experience'])} />
         <CollectionEditor collection="education" items={resume.education} onUpdate={(items) => updateField('education', items as ResumeData['education'])} />
         <CollectionEditor collection="projects" items={resume.projects} onUpdate={(items) => updateField('projects', items as ResumeData['projects'])} />
+        <CollapsibleSection title="Skills">
+          <SkillsEditor skills={resume.skills} onUpdate={(skills) => updateField('skills', skills)} />
+        </CollapsibleSection>
       </aside>
       <ResumePreview resume={resume} theme={theme} />
     </section>

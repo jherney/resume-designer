@@ -15,7 +15,7 @@ npm run dev
 - [x] Live preview
 - [x] Initial themes
 - [x] Editable experience, education, projects, and skills
-- [x] Local browser persistence
+- [x] Auto-save (debounced, to the backend)
 - [x] Reusable editor components and collapsible sections
 - [x] Client-side validation
 - [x] Browser print-to-PDF

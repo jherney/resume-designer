@@ -131,6 +131,8 @@ export const useStore = create<AppState>((set, get) => {
     },
 
     logout() {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = null;
       clearAuthToken();
       void api.auth.logout().catch(() => undefined);
       set({ user: null, resumes: [], currentId: null, resume: null, theme: 'modern', error: null });
@@ -147,6 +149,12 @@ export const useStore = create<AppState>((set, get) => {
     },
 
     async selectResume(id) {
+      // Flush a pending edit so it is saved to the resume being left, not the new one.
+      if (saveTimer) {
+        clearTimeout(saveTimer);
+        saveTimer = null;
+        await persist();
+      }
       const { resume } = await api.resumes.get(id);
       const normalized = normalize(resume.data, resume.theme);
       set({
@@ -235,7 +243,7 @@ export const useStore = create<AppState>((set, get) => {
       const { theme, resume } = get();
       if (!resume) return;
       const blob = await api.pdf.generate(resume, theme);
-      const filename = `${resume?.resumeTitle || 'resume'}.pdf`;
+      const filename = `${resume.resumeTitle || 'resume'}.pdf`;
       if ('__TAURI_INTERNALS__' in window) {
         // Webview ignores anchor downloads; ask where to save and write the file natively.
         const [{ save }, { writeFile }] = await Promise.all([
