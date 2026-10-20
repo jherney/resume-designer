@@ -48,12 +48,14 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
-  const user = await prisma.user.create({
-    data: { email, passwordHash, name },
-    select: { id: true, email: true, name: true, createdAt: true },
+  // Insert and sign in one transaction: if signing fails, the user row is rolled back.
+  const { user, token } = await prisma.$transaction(async (tx) => {
+    const created = await tx.user.create({
+      data: { email, passwordHash, name },
+      select: { id: true, email: true, name: true, createdAt: true },
+    });
+    return { user: created, token: generateToken({ userId: created.id, email: created.email }) };
   });
-
-  const token = generateToken({ userId: user.id, email: user.email });
   setAuthCookie(res, token);
 
   res.status(201).json({ user, token });
