@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import puppeteer, { type Browser } from 'puppeteer';
+import puppeteer, { type Browser } from 'puppeteer-core';
 import { ResumePreview } from '../../../shared/resume/ResumePreview.js';
 import type { ResumeData, ThemeName } from '../../../shared/resume/types.js';
 
@@ -11,9 +11,24 @@ const previewCss = readFileSync(new URL('../../../shared/resume/preview.css', im
 
 let browser: Promise<Browser> | null = null;
 
+async function launchBrowser(): Promise<Browser> {
+  if (process.env.VERCEL) {
+    // Serverless: use the bundled Chromium build.
+    const { default: chromium } = await import('@sparticuz/chromium');
+    return puppeteer.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: true,
+    });
+  }
+  // Local: puppeteer's downloaded Chrome, or PUPPETEER_EXECUTABLE_PATH.
+  const { executablePath } = await import('puppeteer');
+  return puppeteer.launch({ executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (await executablePath()), headless: true });
+}
+
 function getBrowser(): Promise<Browser> {
   if (!browser) {
-    browser = puppeteer.launch({ headless: true });
+    browser = launchBrowser();
     browser.then((b) => b.on('disconnected', () => { browser = null; }), () => { browser = null; });
   }
   return browser;

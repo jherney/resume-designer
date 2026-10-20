@@ -12,3 +12,5 @@ dist
 *.pdf
 *.tsbuildinfo
 .kilo/
+.vercel
+.env*
