@@ -21,9 +21,10 @@ async function launchBrowser(): Promise<Browser> {
       headless: true,
     });
   }
-  // Local: puppeteer's downloaded Chrome, or PUPPETEER_EXECUTABLE_PATH.
-  const { executablePath } = await import('puppeteer');
-  return puppeteer.launch({ executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (await executablePath()), headless: true });
+  // Local: puppeteer-core does not bundle Chrome, so point it at an installed binary.
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (!executablePath) throw new Error('Set PUPPETEER_EXECUTABLE_PATH to a Chrome binary to export PDFs locally.');
+  return puppeteer.launch({ executablePath, headless: true });
 }
 
 function getBrowser(): Promise<Browser> {
