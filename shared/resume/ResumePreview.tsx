@@ -1,4 +1,4 @@
-import type { ResumeData, ThemeName } from '../types/resume';
+import type { ResumeData, ThemeName } from './types.js';
 
 export function ResumePreview({ resume, theme }: { resume: ResumeData; theme: ThemeName }) {
   return <article className={`resume-preview theme-${theme}`}>

@@ -4,3 +4,11 @@ dist
 .env.*
 !.env.example
 .DS_Store
+
+# local data and artifacts
+*.db
+*.db-journal
+*.log
+*.pdf
+*.tsbuildinfo
+.kilo/
