@@ -20,8 +20,10 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   }
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(error.error || `HTTP ${response.status}`);
+    const body = await response.json().catch(() => ({}));
+    // Validation failures come back as { errors: { field: string[] } }.
+    const fieldErrors = Object.values(body.errors ?? {}).flat().join(' ');
+    throw new Error(body.error || fieldErrors || `HTTP ${response.status}`);
   }
 
   return response.json();

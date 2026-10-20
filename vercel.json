@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "buildCommand": "prisma generate --schema backend/prisma/schema.prisma && npm run build",
+  "buildCommand": "prisma generate --schema backend/prisma/schema.prisma && tsc -p backend/tsconfig.json && cp shared/resume/preview.css backend/dist/shared/resume/ && npm run build",
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
@@ -9,7 +9,7 @@
     "api/index.ts": {
       "maxDuration": 30,
       "memory": 1769,
-      "includeFiles": "shared/resume/preview.css"
+      "includeFiles": "backend/dist/shared/resume/preview.css"
     }
   }
 }
