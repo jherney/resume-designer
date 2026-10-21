@@ -103,6 +103,9 @@ textarea { resize: vertical; }
 .theme-option { position: relative; display: grid; gap: 6px; margin: 0; color: var(--ink); font-size: .78rem; font-weight: 500; text-align: center; cursor: pointer; }
 .theme-option input { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; }
 .theme-thumb { display: block; aspect-ratio: 0.77; padding: 10px 9px; background: var(--white); border: 1px solid var(--rule); }
+.thumb-editorial { background: linear-gradient(#1c2024, #1c2024) center 4px / 50% 4px no-repeat, linear-gradient(#1c2024, #1c2024) 0 12px / 100% 1px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 0 20px / 100% 4px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 0 30px / 100% 3px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 0 38px / 80% 3px no-repeat, var(--white); }
+.thumb-slate { background: linear-gradient(#1c2024, #1c2024) 0 0 / 100% 22% no-repeat, linear-gradient(#c3cac1, #c3cac1) 0 30% / 100% 1px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 0 38% / 100% 3px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 0 50% / 80% 3px no-repeat, var(--white); }
+.thumb-forest { background: linear-gradient(#2f6b57, #2f6b57) 0 0 / 2px 100% no-repeat, linear-gradient(#2f6b57, #2f6b57) 8px 8px / 45% 4px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 8px 20px / 90% 3px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 8px 30px / 80% 3px no-repeat, var(--white); }
 .theme-option input:checked + .theme-thumb { border-color: var(--proof); box-shadow: 0 0 0 1px var(--proof); }
 .theme-option input:focus-visible + .theme-thumb { outline: 2px solid var(--proof); outline-offset: 2px; }
 .thumb-modern { background: linear-gradient(#635bff, #635bff) 0 0 / 100% 2px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 0 14px / 100% 5px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 0 30px / 100% 3px no-repeat, linear-gradient(#e2e5ea, #e2e5ea) 0 38px / 80% 3px no-repeat, var(--white); }

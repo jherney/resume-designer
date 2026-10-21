@@ -1,8 +1,8 @@
-import type { ResumeData, StoredResumeState, ThemeName } from '../types/resume';
+import { THEMES, type ResumeData, type StoredResumeState, type ThemeName } from '../types/resume';
 
 export type ValidationErrors = Partial<Record<'resumeTitle' | 'name' | 'title' | 'email', string>>;
 
-const themes: ThemeName[] = ['modern', 'classic', 'minimal'];
+const themes: readonly ThemeName[] = THEMES;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function validateResume(resume: ResumeData): ValidationErrors {

@@ -1,4 +1,4 @@
-import type { ResumeData, ThemeName } from '../types/resume';
+import { THEMES, type ResumeData, type ThemeName } from '../types/resume';
 import type { ValidationErrors } from '../utils/validation';
 
 interface PersonalInfoEditorProps {
@@ -9,11 +9,14 @@ interface PersonalInfoEditorProps {
   onThemeChange: (theme: ThemeName) => void;
 }
 
-const themes: Array<{ name: ThemeName; label: string }> = [
-  { name: 'modern', label: 'Modern' },
-  { name: 'classic', label: 'Classic' },
-  { name: 'minimal', label: 'Minimal' },
-];
+const themeLabels: Record<ThemeName, string> = {
+  modern: 'Modern',
+  classic: 'Classic',
+  minimal: 'Minimal',
+  editorial: 'Editorial',
+  slate: 'Slate',
+  forest: 'Forest',
+};
 
 export function PersonalInfoEditor({ resume, theme, errors, onUpdate, onThemeChange }: PersonalInfoEditorProps) {
   const field = (name: keyof ValidationErrors) => errors[name] ? { 'aria-invalid': true, 'aria-describedby': `${name}-error` } : {};
@@ -28,11 +31,11 @@ export function PersonalInfoEditor({ resume, theme, errors, onUpdate, onThemeCha
     <fieldset className="theme-picker">
       <legend>Theme</legend>
       <div className="theme-options">
-        {themes.map(({ name, label }) => (
+        {THEMES.map((name) => (
           <label key={name} className="theme-option">
             <input type="radio" name="theme" value={name} checked={theme === name} onChange={() => onThemeChange(name)} />
             <span className={`theme-thumb thumb-${name}`} aria-hidden="true" />
-            <span>{label}</span>
+            <span>{themeLabels[name]}</span>
           </label>
         ))}
       </div>

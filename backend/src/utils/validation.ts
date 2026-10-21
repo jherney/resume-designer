@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { THEMES } from '../../../shared/resume/types.js';
 
 export const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -40,7 +41,7 @@ export const resumeDataSchema = z.object({
   })).default([]),
 });
 
-export const themeSchema = z.enum(['modern', 'classic', 'minimal']);
+export const themeSchema = z.enum(THEMES);
 
 export const createResumeSchema = z.object({
   title: z.string().min(1, 'Title is required'),

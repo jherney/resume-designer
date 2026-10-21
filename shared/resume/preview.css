@@ -23,11 +23,30 @@
 .theme-minimal .resume-header { border-bottom: 1px solid #c3cac1; }
 .theme-minimal .resume-header p, .theme-minimal h3 { color: #56605c; }
 .theme-minimal .skill-list span { color: #1c2024; background: none; border: 1px solid #c3cac1; }
-@media screen and (max-width: 900px) { .resume-preview { padding: 36px 24px; } }
+.theme-editorial .resume-header { text-align: center; border-bottom: 3px double #1c2024; }
+.theme-editorial .resume-header h2 { font-size: 3rem; }
+.theme-editorial .resume-header p { color: #1c2024; font-weight: 500; }
+.theme-editorial .resume-header small { display: block; }
+.theme-editorial h3 { color: #1c2024; font-family: 'Newsreader', Georgia, serif; font-size: 1.2rem; font-weight: 500; text-transform: none; letter-spacing: 0; }
+.theme-editorial .skill-list span { color: #1c2024; background: none; border-bottom: 1px solid #c3cac1; border-radius: 0; }
+.theme-slate .resume-header { margin: -64px -64px 36px; padding: 40px 64px 28px; border-bottom: 0; background: #1c2024; color: #fff; }
+.theme-slate .resume-header h2 { color: #fff; }
+.theme-slate .resume-header p, .theme-slate .resume-header small { color: #c3cac1; }
+.theme-slate h3 { color: #1c2024; padding-bottom: 4px; border-bottom: 1px solid #c3cac1; }
+.theme-slate .skill-list span { color: #fff; background: #56605c; }
+.theme-forest .resume-header { border-bottom-color: #2f6b57; }
+.theme-forest .resume-header p, .theme-forest h3 { color: #2f6b57; }
+.theme-forest h3 { padding-left: 10px; border-left: 3px solid #2f6b57; line-height: 1.2; }
+.theme-forest .skill-list span { color: #24493d; background: #e4eee9; }
+@media screen and (max-width: 900px) {
+  .resume-preview { padding: 36px 24px; }
+  .theme-slate .resume-header { margin: -36px -24px 28px; padding: 28px 24px 20px; }
+}
 /* Page margins replace the on-screen padding so every printed page gets them. */
 @page { size: A4; margin: 64px; }
 @media print {
   .resume-preview { min-height: auto; padding: 0; box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .experience, .bullet { break-inside: avoid; }
   .resume-preview h3 { break-after: avoid; }
+  .theme-slate .resume-header { margin: 0 0 36px; padding: 24px 20px; }
 }
