@@ -9,6 +9,17 @@ import type { ResumeData, ThemeName } from '../../../shared/resume/types.js';
 // The relative path holds both from src/ (tsx) and dist/backend/src/ (build copies the CSS).
 const previewCss = readFileSync(new URL('../../../shared/resume/preview.css', import.meta.url), 'utf8');
 
+// The PDF renderer blocks network requests, so the fonts the preview names are embedded.
+const fontFace = (family: string, weight: number, file: string) => {
+  const data = readFileSync(new URL(`../../../shared/resume/fonts/${file}`, import.meta.url)).toString('base64');
+  return `@font-face{font-family:'${family}';font-weight:${weight};font-style:normal;src:url(data:font/woff2;base64,${data}) format('woff2');}`;
+};
+const fontCss = [
+  fontFace('Public Sans', 400, 'public-sans-latin-400-normal.woff2'),
+  fontFace('Public Sans', 600, 'public-sans-latin-600-normal.woff2'),
+  fontFace('Newsreader', 500, 'newsreader-latin-500-normal.woff2'),
+].join('');
+
 let browser: Promise<Browser> | null = null;
 
 async function launchBrowser(): Promise<Browser> {
@@ -37,7 +48,7 @@ function getBrowser(): Promise<Browser> {
 
 function renderHtml(resume: ResumeData, theme: ThemeName): string {
   const body = renderToStaticMarkup(createElement(ResumePreview, { resume, theme }));
-  return `<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0}${previewCss}</style></head><body>${body}</body></html>`;
+  return `<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0}${fontCss}${previewCss}</style></head><body>${body}</body></html>`;
 }
 
 export async function generateResumePDF(resume: ResumeData, theme: ThemeName = 'modern'): Promise<Buffer> {

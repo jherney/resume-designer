@@ -31,7 +31,6 @@ export function AuthScreen() {
   return (
     <main className="auth-shell">
       <form className="auth-card" onSubmit={submit}>
-        <span className="eyebrow">Resume Designer</span>
         <h1>{mode === 'login' ? 'Welcome back' : 'Create your account'}</h1>
         <p className="auth-sub">Your resumes are saved to the cloud and available anywhere you sign in.</p>
 

@@ -1,25 +1,28 @@
-/* Resume preview styles, shared by the app and the server-side PDF renderer. Keep self-contained. */
-.resume-preview { box-sizing: border-box; min-height: 1050px; background: white; padding: 64px; box-shadow: 0 20px 50px #1720331a; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #18202a; }
+/* Resume preview styles, shared by the app and the server-side PDF renderer. Keep self-contained.
+   Fonts: the app loads them from Google Fonts; the PDF renderer embeds the same files (see backend/src/services/pdf.ts). */
+.resume-preview { box-sizing: border-box; min-height: 1050px; background: white; padding: 64px; box-shadow: 0 20px 50px #1c20241f; font-family: 'Public Sans', system-ui, sans-serif; color: #1c2024; }
 .resume-preview * { box-sizing: border-box; }
-.resume-header { border-bottom: 3px solid #635bff; padding-bottom: 24px; margin-bottom: 32px; }
-.resume-header h2 { margin: 0; font-size: 2.7rem; letter-spacing: -.06em; }
-.resume-header p { margin: 8px 0; color: #635bff; font-size: 1.15rem; font-weight: 700; }
-.resume-header small, .experience small { color: #687384; }
+.resume-header { border-bottom: 2px solid #2a4bd7; padding-bottom: 22px; margin-bottom: 32px; }
+.resume-header h2 { margin: 0; font-family: 'Newsreader', Georgia, serif; font-weight: 500; font-size: 2.6rem; letter-spacing: -.01em; line-height: 1.1; }
+.resume-header p { margin: 8px 0; color: #2a4bd7; font-size: 1.1rem; font-weight: 600; }
+.resume-header small, .experience small { color: #56605c; }
 .resume-preview section { margin: 28px 0; }
-.resume-preview h3 { color: #635bff; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; }
-.resume-preview p { line-height: 1.65; }
+.resume-preview h3 { margin: 0 0 4px; color: #2a4bd7; font-size: .95rem; font-weight: 600; }
+.resume-preview p { line-height: 1.6; }
 .experience { margin: 18px 0; }
 .experience-heading { display: flex; justify-content: space-between; gap: 12px; }
-.experience-heading span { color: #687384; }
-.experience > p { margin: 5px 0; font-weight: 700; }
+.experience-heading span { color: #56605c; }
+.experience > p { margin: 5px 0; font-weight: 600; }
 .bullet { margin: 8px 0; line-height: 1.5; }
 .skill-list { display: flex; flex-wrap: wrap; gap: 8px; }
-.skill-list span { border-radius: 999px; padding: 7px 11px; color: #4c43d9; background: #eeedff; font-size: .86rem; font-weight: 700; }
-.theme-classic .resume-header { border-bottom-color: #222; }
-.theme-classic .resume-header p, .theme-classic h3 { color: #222; }
+.skill-list span { border-radius: 2px; padding: 4px 9px; color: #1f3ab0; background: #e8ecfb; font-size: .86rem; font-weight: 500; }
+.theme-classic .resume-header { border-bottom-color: #1c2024; }
+.theme-classic .resume-header p, .theme-classic h3 { color: #1c2024; }
+.theme-classic .skill-list span { color: #1c2024; background: #eef0eb; }
 .theme-minimal { box-shadow: none; }
-.theme-minimal .resume-header { border-bottom: 1px solid #ddd; }
-.theme-minimal .resume-header p, .theme-minimal h3 { color: #687384; }
+.theme-minimal .resume-header { border-bottom: 1px solid #c3cac1; }
+.theme-minimal .resume-header p, .theme-minimal h3 { color: #56605c; }
+.theme-minimal .skill-list span { color: #1c2024; background: none; border: 1px solid #c3cac1; }
 @media screen and (max-width: 900px) { .resume-preview { padding: 36px 24px; } }
 /* Page margins replace the on-screen padding so every printed page gets them. */
 @page { size: A4; margin: 64px; }

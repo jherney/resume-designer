@@ -23,28 +23,31 @@ function Editor() {
   const errors = useMemo(() => (resume ? validateResume(resume) : {}), [resume]);
 
   if (!resume) {
-    return (
-      <section className="workspace">
-        <aside className="panel editor-panel"><p className="empty-state">Select or create a resume to start editing.</p></aside>
-      </section>
-    );
+    return <aside className="editor-panel"><p className="empty-state">Select or create a resume to start editing.</p></aside>;
   }
 
   return (
-    <section className="workspace">
-      <aside className="panel editor-panel">
-        <CollapsibleSection title="Personal information">
-          <PersonalInfoEditor resume={resume} theme={theme} errors={errors} onUpdate={updateField} onThemeChange={setTheme} />
-        </CollapsibleSection>
-        <CollectionEditor collection="experience" items={resume.experience} onUpdate={(items) => updateField('experience', items as ResumeData['experience'])} />
-        <CollectionEditor collection="education" items={resume.education} onUpdate={(items) => updateField('education', items as ResumeData['education'])} />
-        <CollectionEditor collection="projects" items={resume.projects} onUpdate={(items) => updateField('projects', items as ResumeData['projects'])} />
-        <CollapsibleSection title="Skills">
-          <SkillsEditor skills={resume.skills} onUpdate={(skills) => updateField('skills', skills)} />
-        </CollapsibleSection>
-      </aside>
-      <ResumePreview resume={resume} theme={theme} />
-    </section>
+    <aside className="editor-panel">
+      <CollapsibleSection title="Personal information">
+        <PersonalInfoEditor resume={resume} theme={theme} errors={errors} onUpdate={updateField} onThemeChange={setTheme} />
+      </CollapsibleSection>
+      <CollectionEditor collection="experience" items={resume.experience} onUpdate={(items) => updateField('experience', items as ResumeData['experience'])} />
+      <CollectionEditor collection="education" items={resume.education} onUpdate={(items) => updateField('education', items as ResumeData['education'])} />
+      <CollectionEditor collection="projects" items={resume.projects} onUpdate={(items) => updateField('projects', items as ResumeData['projects'])} />
+      <CollapsibleSection title="Skills">
+        <SkillsEditor skills={resume.skills} onUpdate={(skills) => updateField('skills', skills)} />
+      </CollapsibleSection>
+    </aside>
+  );
+}
+
+function Page() {
+  const resume = useStore((s) => s.resume);
+  const theme = useStore((s) => s.theme);
+  return (
+    <div className="desk">
+      {resume && <div className="sheet"><ResumePreview resume={resume} theme={theme} /></div>}
+    </div>
   );
 }
 
@@ -77,8 +80,7 @@ export default function App() {
     <main className="app-shell">
       <header className="topbar">
         <div>
-          <span className="eyebrow">Resume Designer</span>
-          <h1>Build a resume that feels like you.</h1>
+          <h1>Resume Designer</h1>
           <p className="save-status">
             {statusText}
             {hasErrors && ' · Fix required fields before exporting'}
@@ -92,8 +94,11 @@ export default function App() {
         </div>
       </header>
       <div className="layout">
-        <ResumeSidebar />
-        <Editor />
+        <div className="rail">
+          <ResumeSidebar />
+          <Editor />
+        </div>
+        <Page />
       </div>
     </main>
   );

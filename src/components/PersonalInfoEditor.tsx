@@ -9,6 +9,12 @@ interface PersonalInfoEditorProps {
   onThemeChange: (theme: ThemeName) => void;
 }
 
+const themes: Array<{ name: ThemeName; label: string }> = [
+  { name: 'modern', label: 'Modern' },
+  { name: 'classic', label: 'Classic' },
+  { name: 'minimal', label: 'Minimal' },
+];
+
 export function PersonalInfoEditor({ resume, theme, errors, onUpdate, onThemeChange }: PersonalInfoEditorProps) {
   const field = (name: keyof ValidationErrors) => errors[name] ? { 'aria-invalid': true, 'aria-describedby': `${name}-error` } : {};
   return <>
@@ -19,6 +25,17 @@ export function PersonalInfoEditor({ resume, theme, errors, onUpdate, onThemeCha
     <label>Email<input {...field('email')} type="email" value={resume.email} onChange={(e) => onUpdate('email', e.target.value)} />{errors.email && <span className="field-error" id="email-error">{errors.email}</span>}</label>
     <label>Location<input value={resume.location} onChange={(e) => onUpdate('location', e.target.value)} /></label>
     <label>Summary<textarea rows={4} value={resume.summary} onChange={(e) => onUpdate('summary', e.target.value)} /></label>
-    <label>Theme<select value={theme} onChange={(e) => onThemeChange(e.target.value as ThemeName)}><option value="modern">Modern</option><option value="classic">Classic</option><option value="minimal">Minimal</option></select></label>
+    <fieldset className="theme-picker">
+      <legend>Theme</legend>
+      <div className="theme-options">
+        {themes.map(({ name, label }) => (
+          <label key={name} className="theme-option">
+            <input type="radio" name="theme" value={name} checked={theme === name} onChange={() => onThemeChange(name)} />
+            <span className={`theme-thumb thumb-${name}`} aria-hidden="true" />
+            <span>{label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
   </>;
 }
