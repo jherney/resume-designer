@@ -21,11 +21,29 @@ const createItem = (collection: Collection): CollectionItem => {
 export function CollectionEditor({ collection, items, onUpdate }: CollectionEditorProps) {
   const add = () => onUpdate([...items, createItem(collection)]);
   const remove = (id: string) => onUpdate(items.filter((item) => item.id !== id));
+  const move = (index: number, delta: number) => {
+    const target = index + delta;
+    if (target < 0 || target >= items.length) return;
+    const next = [...items];
+    [next[index], next[target]] = [next[target], next[index]];
+    onUpdate(next);
+  };
+  const duplicate = (index: number) => {
+    const source = items[index];
+    const copy = { ...source, id: crypto.randomUUID() } as CollectionItem;
+    if ('bullets' in copy) copy.bullets = [...copy.bullets];
+    onUpdate([...items.slice(0, index + 1), copy, ...items.slice(index + 1)]);
+  };
   const update = (id: string, patch: Partial<CollectionItem>) => onUpdate(items.map((item) => item.id === id ? { ...item, ...patch } : item));
 
   return <CollapsibleSection title={labels[collection]} action={<button type="button" className="add-button" onClick={(event) => { event.preventDefault(); add(); }}>+ Add</button>}>
-    {items.map((item) => <div className="editor-card" key={item.id}>
-      <button type="button" className="remove-button" onClick={() => remove(item.id)}>Remove</button>
+    {items.map((item, index) => <div className="editor-card" key={item.id}>
+      <div className="card-actions">
+        <button type="button" className="icon-button" aria-label="Move up" title="Move up" disabled={index === 0} onClick={() => move(index, -1)}>↑</button>
+        <button type="button" className="icon-button" aria-label="Move down" title="Move down" disabled={index === items.length - 1} onClick={() => move(index, 1)}>↓</button>
+        <button type="button" className="icon-button" onClick={() => duplicate(index)}>Duplicate</button>
+        <button type="button" className="remove-button" onClick={() => remove(item.id)}>Remove</button>
+      </div>
       {collection === 'experience' && <>
         <input placeholder="Job title" value={(item as ExperienceItem).role} onChange={(e) => update(item.id, { role: e.target.value })} />
         <input placeholder="Company" value={(item as ExperienceItem).company} onChange={(e) => update(item.id, { company: e.target.value })} />

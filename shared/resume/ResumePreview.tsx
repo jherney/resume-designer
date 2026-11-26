@@ -6,7 +6,7 @@ export function ResumePreview({ resume, theme }: { resume: ResumeData; theme: Th
     {resume.summary && <section><h3>Profile</h3><p>{resume.summary}</p></section>}
     {resume.experience.length > 0 && <section><h3>Experience</h3>{resume.experience.map((item) => <div className="experience" key={item.id}><div className="experience-heading"><strong>{item.role || 'Job title'}</strong><span>{item.dates}</span></div><p>{item.company}</p>{item.bullets.filter(Boolean).map((bullet, index) => <div className="bullet" key={`${item.id}-bullet-${index}`}>• {bullet}</div>)}</div>)}</section>}
     {resume.education.length > 0 && <section><h3>Education</h3>{resume.education.map((item) => <div className="experience" key={item.id}><div className="experience-heading"><strong>{item.degree || 'Degree'}</strong><span>{item.dates}</span></div><p>{item.institution}</p></div>)}</section>}
-    {resume.projects.length > 0 && <section><h3>Projects</h3>{resume.projects.map((item) => <div className="experience" key={item.id}><strong>{item.name || 'Project name'}</strong><p>{item.description}</p>{item.link && <small>{item.link}</small>}</div>)}</section>}
+    {resume.projects.length > 0 && <section><h3>Projects</h3>{resume.projects.map((item) => <div className="experience" key={item.id}><strong>{item.name || 'Project name'}</strong><p>{item.description}</p>{item.link && <small><a href={/^https?:\/\//i.test(item.link) ? item.link : `https://${item.link}`} target="_blank" rel="noreferrer">{item.link}</a></small>}</div>)}</section>}
     {resume.skills.length > 0 && <section><h3>Skills</h3><div className="skill-list">{resume.skills.map((skill, index) => <span key={`${skill}-${index}`}>{skill}</span>)}</div></section>}
   </article>;
 }
