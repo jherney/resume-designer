@@ -1,12 +1,14 @@
 import type { ResumeData, ThemeName } from './types.js';
 
-// Only http(s) links are clickable. A bare "example.com" gets https://; any other scheme (mailto:, javascript:) or non-URL text stays plain text.
+// Only http(s) links to a real-looking host are clickable. A bare "example.com" gets https://; other schemes (mailto:, javascript:),
+// single words ("TBD", "N/A") and non-URL text stay plain text.
+const isHost = (h: string) => h === 'localhost' || /^([a-z0-9-]+\.)+[a-z][a-z0-9-]+$/i.test(h) || /^\d{1,3}(\.\d{1,3}){3}$/.test(h);
 function webHref(raw: string): string | undefined {
   const value = raw.trim();
   if (!/^https?:\/\//i.test(value) && /^[a-z][a-z0-9+.-]*:(?!\d)/i.test(value)) return undefined;
   try {
     const url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`);
-    return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : undefined;
+    return (url.protocol === 'http:' || url.protocol === 'https:') && isHost(url.hostname) ? url.href : undefined;
   } catch {
     return undefined;
   }
