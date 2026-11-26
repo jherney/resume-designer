@@ -30,6 +30,7 @@ export function CollectionEditor({ collection, items, onUpdate }: CollectionEdit
     next.splice(to, 0, next.splice(from, 1)[0]);
     onUpdate(next);
   };
+  const itemName = (item: CollectionItem) => ('role' in item ? item.role || item.company : 'degree' in item ? item.degree || item.institution : item.name) || 'entry';
   const endDrag = () => { setDragIndex(null); setOverIndex(null); };
   const duplicate = (index: number) => {
     const source = items[index];
@@ -49,23 +50,22 @@ export function CollectionEditor({ collection, items, onUpdate }: CollectionEdit
       <div className="card-actions">
         <span
           className="drag-handle"
-          role="img"
-          aria-label="Drag to reorder"
+          aria-hidden="true"
           title="Drag to reorder"
           draggable
           onDragStart={(event) => {
             event.dataTransfer.effectAllowed = 'move';
-            event.dataTransfer.setData('text/plain', item.id);
+            event.dataTransfer.setData('application/x-resume-item', item.id);
             const card = event.currentTarget.closest('.editor-card');
             if (card) event.dataTransfer.setDragImage(card, 16, 16);
             setDragIndex(index);
           }}
           onDragEnd={endDrag}
         >⠿</span>
-        <button type="button" className="icon-button" aria-label="Move up" title="Move up" disabled={index === 0} onClick={() => moveTo(index, index - 1)}>↑</button>
-        <button type="button" className="icon-button" aria-label="Move down" title="Move down" disabled={index === items.length - 1} onClick={() => moveTo(index, index + 1)}>↓</button>
-        <button type="button" className="icon-button" onClick={() => duplicate(index)}>Duplicate</button>
-        <button type="button" className="remove-button" onClick={() => remove(item.id)}>Remove</button>
+        <button type="button" className="icon-button" aria-label={`Move ${itemName(item)} up`} title="Move up" aria-disabled={index === 0} onClick={() => moveTo(index, index - 1)}>↑</button>
+        <button type="button" className="icon-button" aria-label={`Move ${itemName(item)} down`} title="Move down" aria-disabled={index === items.length - 1} onClick={() => moveTo(index, index + 1)}>↓</button>
+        <button type="button" className="icon-button" aria-label={`Duplicate ${itemName(item)}`} onClick={() => duplicate(index)}>Duplicate</button>
+        <button type="button" className="remove-button" aria-label={`Remove ${itemName(item)}`} onClick={() => remove(item.id)}>Remove</button>
       </div>
       {collection === 'experience' && <>
         <input placeholder="Job title" value={(item as ExperienceItem).role} onChange={(e) => update(item.id, { role: e.target.value })} />
