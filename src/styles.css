@@ -60,6 +60,10 @@ textarea { resize: vertical; }
 .card-actions { display: flex; justify-content: flex-end; gap: 6px; }
 .icon-button { border: 1px solid #d4dbe5; border-radius: 7px; padding: 6px 9px; background: white; color: #344054; font-size: .78rem; font-weight: 700; cursor: pointer; }
 .icon-button:disabled { opacity: .4; cursor: default; }
+.drag-handle { margin-right: auto; padding: 4px 8px; color: #667085; font-size: 1.1rem; line-height: 1; cursor: grab; user-select: none; }
+.drag-handle:active { cursor: grabbing; }
+.editor-card.dragging { opacity: .45; }
+.editor-card.drop-target { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, .25); }
 .empty-state { color: #687384; font-size: .86rem; }
 @media (max-width: 900px) { .app-shell { padding: 18px; } .topbar { align-items: start; flex-direction: column; } .workspace { grid-template-columns: 1fr; } }
 @media print { :root, body { background: white; } .app-shell { padding: 0; } .topbar, .editor-panel { display: none; } .workspace { display: block; } }
